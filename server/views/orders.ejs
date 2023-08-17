@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <title>Customer Orders</title>
+</head>
+<body>
+    <div>
+        <nav class="navbar bg-body-tertiary" data-bs-theme="light">
+            <div class="container-fluid" style="justify-content: flex-start !important;">
+              <a class="navbar-brand" href="#">
+                <img src="https://tinyurl.com/logosathi" alt="Logo" width="45" height="35" class="d-inline-block align-text-top" >
+              </a>
+              <h2>HealthSaathi Pharmacy</h2>
+            </div>
+          </nav>
+
+    </div>
+   
+    <h4 style="position: relative;
+    left: 31rem;">Customer Orders</h4>
+    <button id="refreshButton">Refresh</button>
+   
+    <table class="table table-success table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Customer Name</th>
+            <th scope="col">Customer Id</th>
+            <th scope="col">Prescription</th>
+            <th scope="col">Order id</th>
+          </tr>
+        </thead>
+       <tbody>
+        <% orders.forEach(order => { %>
+          <tr>
+            <td><%= order.userName %></td>
+            <td><%= order.userId %></td>
+            <td><a href="<%= order.imageUrl %>" target="_blank">View Image</a></td>
+            <td><%= order.orderId %></td>
+            <td>
+              <form action="/submit-order" method="post">
+                <input type="hidden" name="orderId" value="<%= order.orderId %>">
+                <input type="number" name="billAmount" placeholder="Enter bill amount" required>
+                <button type="submit">Confirm Order</button>
+              </form>
+            </td>
+          </tr>
+        <% }); %>
+        </tbody>
+      </table>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    
+    <script>
+      const refreshButton = document.getElementById('refreshButton');
+      refreshButton.addEventListener('click', () => {
+        location.reload();
+      });
+    </script>
+
+</body>
+</html>
