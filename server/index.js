@@ -40,6 +40,7 @@ app.get('/orders', async (req, res) => {
     ordersSnapshot.forEach(orderSnapshot => {
       const order = orderSnapshot.val();
       order.orderId = orderSnapshot.key; // Adding the push ID as orderId
+      console.log(order.orderId);
       orders.push(order);
     });
     res.render('orders', { orders });
