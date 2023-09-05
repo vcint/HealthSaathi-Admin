@@ -4,9 +4,8 @@ const path = require('path');
 const bodyParser = require('body-parser');
 
 const admin = require("firebase-admin");
-const serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG);
-
-// var serviceAccount = require("../FirebaseDbKey.json");
+// const serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG);
+ var serviceAccount = require("../FirebaseDbKey.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -84,6 +83,37 @@ app.post('/submit-order', async (req, res) => {
     res.redirect('/orders');
   } catch (error) {
     console.error('Error submitting order:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+app.post('/submitShipped', async (req, res) => {
+  try {
+    const { orderId } = req.body;
+
+    // Get the reference to the specific order in the "pending_orders" collection
+    const pendingOrderRef = pendingOrdersRef.child(orderId);
+
+    // Get the order data
+    const pendingOrderSnapshot = await pendingOrderRef.once('value');
+    const pendingOrderData = pendingOrderSnapshot.val();
+
+    if (!pendingOrderData) {
+      console.error('Pending order not found');
+      res.status(404).send('Pending order not found');
+      return;
+    }
+
+    // Move the order to the "shipped_orders" collection
+    await shippedOrdersRef.push(pendingOrderData);
+
+    // Remove the order from the "pending_orders" collection
+    await pendingOrderRef.remove();
+
+    res.status(200).send('Order marked as shipped successfully');
+  } catch (error) {
+    console.error('Error marking order as shipped:', error);
     res.status(500).send('Internal Server Error');
   }
 });
