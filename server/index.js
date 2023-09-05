@@ -88,14 +88,14 @@ app.post('/submit-order', async (req, res) => {
 });
 
 
-app.post('/submitShipped', async (req, res) => {
+app.post('/shippedOrder', async (req, res) => {
   try {
     const { orderId } = req.body;
 
     // Get the reference to the specific order in the "pending_orders" collection
-    const pendingOrderRef = pendingOrdersRef.child(orderId);
+    const pendingOrderRef = admin.database().ref('pending_orders').child(orderId);
 
-    // Get the order data
+    // Get the pending order data
     const pendingOrderSnapshot = await pendingOrderRef.once('value');
     const pendingOrderData = pendingOrderSnapshot.val();
 
@@ -105,8 +105,8 @@ app.post('/submitShipped', async (req, res) => {
       return;
     }
 
-    // Move the order to the "shipped_orders" collection
-    await shippedOrdersRef.push(pendingOrderData);
+    // Move the order to "shipped orders" collection
+    await admin.database().ref('shipped_orders').push(pendingOrderData);
 
     // Remove the order from the "pending_orders" collection
     await pendingOrderRef.remove();
