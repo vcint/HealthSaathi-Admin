@@ -1,5 +1,4 @@
 const express = require('express');
-const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
 
@@ -12,6 +11,7 @@ admin.initializeApp({
   databaseURL: "https://healthsaathi23-default-rtdb.firebaseio.com"
 
 });
+const app = express();
 const database = admin.database();
 
 // Reference to the "orders" node
@@ -88,7 +88,7 @@ app.post('/submit-order', async (req, res) => {
 });
 
 
-app.use(express.json());
+app.use(bodyParser.json());
 app.post('/shippedOrder', async (req, res) => {
   try {
     const { orderId } = req.body;
