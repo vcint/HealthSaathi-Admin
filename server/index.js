@@ -101,7 +101,7 @@ app.post('/shippedOrder', async (req, res) => {
     }
 
     // Get the reference to the specific order in the "pending_orders" collection
-    const pendingOrderRef = admin.database().ref('pending_orders').child(orderId);
+    const pendingOrderRef = admin.database().ref('pending_orders').child(pushId);
 
     // Get the pending order data
     const pendingOrderSnapshot = await pendingOrderRef.once('value');
