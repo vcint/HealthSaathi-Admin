@@ -55,7 +55,7 @@ app.post('/submit-order', async (req, res) => {
     const { orderId, billAmount } = req.body;
 
     // Get the reference to the specific order in the "orders" collection
-    const orderRef = admin.database().ref('orders').child(orderId);
+    const orderRef = admin.database().ref('pending_orders').child(orderId);
 
     // Get the order data
     const orderSnapshot = await orderRef.once('value');
