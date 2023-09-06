@@ -55,7 +55,7 @@ app.post('/submit-order', async (req, res) => {
     const { orderId, billAmount } = req.body;
 
     // Get the reference to the specific order in the "orders" collection
-    const orderRef = admin.database().ref('pending_orders').child(orderId);
+    const orderRef = admin.database().ref('orders').child(orderId);
 
     // Get the order data
     const orderSnapshot = await orderRef.once('value');
@@ -91,10 +91,10 @@ app.post('/submit-order', async (req, res) => {
 app.use(bodyParser.json());
 app.post('/shippedOrder', async (req, res) => {
   try {
-    const { orderId } = req.body;
-    console.log('Received orderId:', orderId); // Log the received orderId
+    const { pushId } = req.body;
+    console.log('Received orderId:', pushId); // Log the received orderId
 
-    if (!orderId) {
+    if (!pushId) {
       console.error('OrderId is missing in the request body');
       res.status(400).send('OrderId is missing in the request body');
       return;
