@@ -92,11 +92,11 @@ app.use(bodyParser.json());
 app.post('/shippedOrder', async (req, res) => {
   try {
     const { pushId } = req.body;
-    console.log('Received orderId:', pushId); // Log the received orderId
+    console.log('Received pushId:', pushId); // Log the received pushId
 
     if (!pushId) {
-      console.error('OrderId is missing in the request body');
-      res.status(400).send('OrderId is missing in the request body');
+      console.error('PushId is missing in the request body');
+      res.status(400).send('PushId is missing in the request body');
       return;
     }
 
@@ -125,6 +125,7 @@ app.post('/shippedOrder', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
 
 
 
