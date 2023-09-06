@@ -92,40 +92,40 @@ app.use(bodyParser.json());
 app.post('/shippedOrder', async (req, res) => {
   try {
     const { orderId } = req.body;
-    console.log('Received orderId:', orderId);
-    // Check if orderId is provided in the request
+    console.log('Received orderId:', orderId); // Log the received orderId
+
     if (!orderId) {
       console.error('OrderId is missing in the request body');
-      return res.status(400).send('Bad Request: OrderId is missing');
+      res.status(400).send('OrderId is missing in the request body');
+      return;
     }
 
-    // Get a reference to the specific order in the "pending_orders" collection
+    // Get the reference to the specific order in the "pending_orders" collection
     const pendingOrderRef = admin.database().ref('pending_orders').child(orderId);
 
     // Get the pending order data
     const pendingOrderSnapshot = await pendingOrderRef.once('value');
     const pendingOrderData = pendingOrderSnapshot.val();
 
-    // Check if the pending order exists
     if (!pendingOrderData) {
       console.error('Pending order not found');
-      return res.status(404).send('Pending order not found');
+      res.status(404).send('Pending order not found');
+      return;
     }
 
-    // Move the order to "shipped_orders" collection
-    const shippedOrderRef = admin.database().ref('shipped_orders').push();
-    await shippedOrderRef.set(pendingOrderData);
+    // Move the order to "shipped orders" collection
+    await admin.database().ref('shipped_orders').push(pendingOrderData);
 
     // Remove the order from the "pending_orders" collection
     await pendingOrderRef.remove();
 
-    console.log(`Order ${orderId} marked as shipped successfully`);
     res.status(200).send('Order marked as shipped successfully');
   } catch (error) {
     console.error('Error marking order as shipped:', error);
     res.status(500).send('Internal Server Error');
   }
 });
+
 
 
 
