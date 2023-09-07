@@ -120,6 +120,7 @@ app.post('/shippedOrder', async (req, res) => {
     await pendingOrderRef.remove();
 
     res.status(200).send('Order marked as shipped successfully');
+    console.log(pushId+' marked as shipped successfully');
   } catch (error) {
     console.error('Error marking order as shipped:', error);
     res.status(500).send('Internal Server Error');
