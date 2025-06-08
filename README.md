@@ -21,7 +21,6 @@
 
 This admin dashboard ensures smooth, secure, and scalable management of healthcare workflows tailored for elderly users. Designed using scalable Node.js architecture, it provides an intuitive UI for admin-level operations.
 
-> 🚀 **SEO Optimized**: Designed to be fast, lightweight, and indexed well by search engines to support broader access and visibility.
 
 ---
 
